@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "name": "Arafat Rahman",
+    "picture": "https://i.pravatar.cc/150?img=11",
+    "email": "arafat.rahman@example.com",
+    "days_since_contact": 18,
+    "status": "overdue",
+    "tags": ["college", "close friend"],
+    "bio": "Met during university. We often talk about technology, career goals, and football.",
+    "goal": 14,
+    "next_due_date": "2026-08-22"
+  },
+  {
+    "id": 2,
+    "name": "Nusrat Jahan",
+    "picture": "https://i.pravatar.cc/150?img=47",
+    "email": "nusrat.jahan@example.com",
+    "days_since_contact": 6,
+    "status": "on track",
+    "tags": ["university", "best friend"],
+    "bio": "A longtime university friend who loves photography, traveling, and trying new cafes.",
+    "goal": 14,
+    "next_due_date": "2026-09-03"
+  },
+  {
+    "id": 3,
+    "name": "Tanvir Hasan",
+    "picture": "https://i.pravatar.cc/150?img=12",
+    "email": "tanvir.hasan@example.com",
+    "days_since_contact": 25,
+    "status": "overdue",
+    "tags": ["school", "old friend"],
+    "bio": "We have known each other since school and still catch up whenever we get the chance.",
+    "goal": 21,
+    "next_due_date": "2026-08-22"
+  },
+  {
+    "id": 4,
+    "name": "Sarah Williams",
+    "picture": "https://i.pravatar.cc/150?img=44",
+    "email": "sarah.williams@example.com",
+    "days_since_contact": 3,
+    "status": "on track",
+    "tags": ["work", "friend"],
+    "bio": "Former coworker who enjoys reading, weekend trips, and discussing new ideas over coffee.",
+    "goal": 14,
+    "next_due_date": "2026-09-06"
+  },
+  {
+    "id": 5,
+    "name": "Fahim Ahmed",
+    "picture": "https://i.pravatar.cc/150?img=13",
+    "email": "fahim.ahmed@example.com",
+    "days_since_contact": 31,
+    "status": "overdue",
+    "tags": ["college", "gaming"],
+    "bio": "University friend and gaming partner. We used to spend weekends playing multiplayer games.",
+    "goal": 21,
+    "next_due_date": "2026-08-16"
+  },
+  {
+    "id": 6,
+    "name": "Maya Thompson",
+    "picture": "https://i.pravatar.cc/150?img=48",
+    "email": "maya.thompson@example.com",
+    "days_since_contact": 10,
+    "status": "on track",
+    "tags": ["work", "close friend"],
+    "bio": "Met through work and quickly became a close friend. We enjoy hiking and exploring restaurants.",
+    "goal": 14,
+    "next_due_date": "2026-08-30"
+  },
+  {
+    "id": 7,
+    "name": "Rafiul Karim",
+    "picture": "https://i.pravatar.cc/150?img=14",
+    "email": "rafiul.karim@example.com",
+    "days_since_contact": 42,
+    "status": "overdue",
+    "tags": ["school", "close friend"],
+    "bio": "One of my closest friends from school. We share countless memories and still support each other.",
+    "goal": 30,
+    "next_due_date": "2026-08-14"
+  },
+  {
+    "id": 8,
+    "name": "Emily Carter",
+    "picture": "https://i.pravatar.cc/150?img=49",
+    "email": "emily.carter@example.com",
+    "days_since_contact": 8,
+    "status": "on track",
+    "tags": ["travel", "friend"],
+    "bio": "Met while traveling. We stay connected by sharing travel stories and planning future adventures.",
+    "goal": 14,
+    "next_due_date": "2026-09-01"
+  },
+  {
+    "id": 9,
+    "name": "Sakib Hossain",
+    "picture": "https://i.pravatar.cc/150?img=15",
+    "email": "sakib.hossain@example.com",
+    "days_since_contact": 16,
+    "status": "overdue",
+    "tags": ["college", "coding"],
+    "bio": "A fellow programming enthusiast. We regularly discuss software development and side projects.",
+    "goal": 14,
+    "next_due_date": "2026-08-24"
+  },
+  {
+    "id": 10,
+    "name": "Olivia Brown",
+    "picture": "https://i.pravatar.cc/150?img=45",
+    "email": "olivia.brown@example.com",
+    "days_since_contact": 5,
+    "status": "on track",
+    "tags": ["neighbor", "friend"],
+    "bio": "A friendly neighbor who loves cooking, gardening, and hosting casual dinner gatherings.",
+    "goal": 14,
+    "next_due_date": "2026-09-04"
+  }
+]
