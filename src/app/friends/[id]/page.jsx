@@ -43,6 +43,7 @@ export default function FriendsDetails() {
       id: Date.now(),
       type: type,
       friendName: friend.name,
+      next_due_date: friend.next_due_date,
     };
 
     
