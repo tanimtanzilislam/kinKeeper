@@ -2,9 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function FriendsDetails() {
   const [friend, setFriend] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const { id } = useParams();
 
@@ -13,217 +16,371 @@ export default function FriendsDetails() {
       .then((res) => res.json())
       .then((data) => {
         const selectedFriend = data.find(
-          (friend) => String(friend.id) === String(id)
+          (item) => String(item.id) === String(id)
         );
 
-        setFriend(selectedFriend);
+        setFriend(selectedFriend || null);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error loading friend:", error);
+        setLoading(false);
       });
   }, [id]);
 
+  const handleTimeline = (type) => {
+    // Friend না থাকলে function বন্ধ
+    if (!friend) {
+      return;
+    }
+
+    // আগের events বের করা
+    const existingEvents =
+      JSON.parse(localStorage.getItem("timelineEvents")) || [];
+
+    // নতুন event
+    const newEvent = {
+      id: Date.now(),
+      type: type,
+      friendName: friend.name,
+    };
+
+    // নতুন event সবার সামনে
+    const updatedEvents = [newEvent, ...existingEvents];
+
+    // localStorage-এ save
+    localStorage.setItem(
+      "timelineEvents",
+      JSON.stringify(updatedEvents)
+    );
+
+    // Toast notification
+    toast.success(`${type} added to timeline!`);
+
+    console.log(updatedEvents);
+  };
+
+  // Loading অবস্থায়
+  if (loading) {
+    return <p className="text-center mt-20">Loading...</p>;
+  }
+
+  // Friend পাওয়া না গেলে
   if (!friend) {
-    return <p>Loading...</p>;
+    return (
+      <div className="text-center mt-20">
+        <h2 className="text-2xl font-bold">
+          Friend not found
+        </h2>
+
+        <p className="text-gray-500 mt-2">
+          No friend found with ID: {id}
+        </p>
+      </div>
+    );
   }
 
   return (
-    <div className="grid grid-cols-2 gap-10 mt-20">
+    <>
+      {/* Toastify */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        closeOnClick
+        pauseOnHover
+        draggable
+      />
 
-      <div className="ml-140">
-       
+      <div className="grid grid-cols-2 gap-10 mt-20">
 
-         <div>
-        <div className="card bg-base-100 w-96 shadow-sm">
+        {/* ================= LEFT SIDE ================= */}
 
-          <figure>
-            <img
-              src={friend.picture}
-              alt={friend.name}
-              className="w-32 h-32 rounded-full object-cover"
-            />
-          </figure>
+        <div className="ml-140">
 
-          <div className="card-body">
+          {/* Friend Card */}
 
-            <h2 className="card-title">
-              {friend.name}
-            </h2>
+          <div className="card bg-base-100 w-96 shadow-sm">
 
-            <p className="text-gray-500">
-              {friend.days_since_contact} days ago
-            </p>
+            <figure>
+              <img
+                src={friend.picture}
+                alt={friend.name}
+                className="w-32 h-32 rounded-full object-cover"
+              />
+            </figure>
 
-            <div>
-              {friend.status === "overdue" ? (
-                <button className="btn btn-error rounded-full min-h-0 h-auto px-3 py-1">
-                  Overdue
-                </button>
-              ) : friend.status === "almost due" ? (
-                <button className="btn btn-warning rounded-full min-h-0 h-auto px-3 py-1">
-                  Almost Due
-                </button>
-              ) : friend.status === "on track" ? (
-                <button className="btn btn-neutral rounded-full min-h-0 h-auto px-3 py-1">
-                  On Track
-                </button>
-              ) : null}
+            <div className="card-body">
+
+              <h2 className="card-title">
+                {friend.name}
+              </h2>
+
+              <p className="text-gray-500">
+                {friend.days_since_contact} days ago
+              </p>
+
+              <div>
+
+                {friend.status === "overdue" ? (
+                  <button className="btn btn-error rounded-full min-h-0 h-auto px-3 py-1">
+                    Overdue
+                  </button>
+                ) : friend.status === "almost due" ? (
+                  <button className="btn btn-warning rounded-full min-h-0 h-auto px-3 py-1">
+                    Almost Due
+                  </button>
+                ) : friend.status === "on track" ? (
+                  <button className="btn btn-neutral rounded-full min-h-0 h-auto px-3 py-1">
+                    On Track
+                  </button>
+                ) : null}
+
+              </div>
+
+            </div>
+          </div>
+
+
+          {/* Snooze */}
+
+          <div className="card bg-base-100 w-96 shadow-sm mt-5 mb-5">
+
+            <div className="card-body">
+
+              <p className="font-bold">
+                <i className="fa-regular fa-bell"></i>{" "}
+                Snooze 2 weeks
+              </p>
+
             </div>
 
           </div>
+
+
+          {/* Archive */}
+
+          <div className="card bg-base-100 w-96 shadow-sm mt-5 mb-5">
+
+            <div className="card-body">
+
+              <p className="font-bold">
+                <i className="fa-solid fa-box-archive"></i>{" "}
+                Archive
+              </p>
+
+            </div>
+
+          </div>
+
+
+          {/* Delete */}
+
+          <div className="card bg-base-100 w-96 shadow-sm mt-5 mb-5">
+
+            <div className="card-body">
+
+              <p className="font-bold text-red-500">
+                <i className="fa-solid fa-trash"></i>{" "}
+                Delete
+              </p>
+
+            </div>
+
+          </div>
+
         </div>
 
 
+        {/* ================= RIGHT SIDE ================= */}
+
+        <div>
+
+          {/* Stats */}
+
+          <section className="flex gap-5">
+
+            {/* Days Since Contact */}
+
+            <div className="card w-48 h-30 bg-base-100 card-xs shadow-sm">
+
+              <div className="card-body">
+
+                <h2 className="font-bold text-2xl mt-5">
+                  {friend.days_since_contact}
+                </h2>
+
+                <p className="text-gray-400">
+                  On Track
+                </p>
+
+              </div>
+
+            </div>
 
 
+            {/* Goal */}
 
-<div className="card bg-base-100 w-96 shadow-sm mt-5 mb-5">
- 
-  <div className="card-body">
-    
-    <p className="font-bold "><i class="fa-regular fa-bell"></i> snooze 2 weeks</p>
-    
-  </div>
-</div>
+            <div className="card w-48 h-30 bg-base-100 card-xs shadow-sm">
 
+              <div className="card-body">
 
+                <h2 className="font-bold text-2xl mt-5">
+                  {friend.goal}
+                </h2>
 
-<div className="card bg-base-100 w-96 shadow-sm mt-5 mb-5">
- 
-  <div className="card-body">
-    
-    <p className="font-bold "><i class="fa-solid fa-box-archive"></i> Archive</p>
-    
-  </div>
-</div>
+                <p className="text-gray-400">
+                  Goal Days
+                </p>
+
+              </div>
+
+            </div>
 
 
+            {/* Next Due Date */}
 
-<div className="card bg-base-100 w-96 shadow-sm mt-5 mb-5">
- 
-  <div className="card-body">
-    
-    <p className="font-bold text-red-500 "><i class="fa-solid fa-trash"></i>Delete</p>
-    
-  </div>
-</div>
-      </div>
+            <div className="card w-48 h-30 bg-base-100 card-xs shadow-sm">
 
-      </div>
+              <div className="card-body">
+
+                <h2 className="font-bold text-2xl mt-5">
+                  {friend.next_due_date}
+                </h2>
+
+                <p className="text-gray-400">
+                  Goal Days
+                </p>
+
+              </div>
+
+            </div>
+
+          </section>
 
 
+          {/* Relationship Goal */}
+
+          <div className="card w-150 bg-base-100 card-sm shadow-sm mt-5">
+
+            <div className="card-body">
+
+              <div className="flex justify-between items-center">
+
+                <h2 className="card-title">
+                  Relationship Goal
+                </h2>
+
+                <button className="btn">
+                  Edit
+                </button>
+
+              </div>
+
+              <p>
+                Connect every{" "}
+                <span className="font-bold">
+                  30 days
+                </span>
+              </p>
+
+            </div>
+
+          </div>
 
 
+          {/* Quick Check-In */}
 
-      <div>
+          <div className="card w-150 bg-base-100 card-sm shadow-sm mt-5">
 
-<section className="flex gap-5">
+            <div className="card-body">
 
-    <div className="card w-48 h-30 bg-base-100 card-xs shadow-sm">
-        <div className="card-body">
-          <h2 className="font-bold text-2xl mt-5">
-            {friend.days_since_contact}
-          </h2>
-          <p className="text-gray-400"> On Track</p>
+              <h2 className="card-title">
+                Quick Check-In
+              </h2>
 
-          <div className="justify-end card-actions"></div>
+
+              <div className="flex gap-3">
+
+                {/* ================= CALL ================= */}
+
+                <div className="card w-48 h-30 bg-base-100 card-xs shadow-sm">
+
+                  <div className="card-body">
+
+                    <h2 className="font-bold text-2xl mt-5 flex justify-center items-center">
+
+                      <i className="fa-solid fa-phone"></i>
+
+                    </h2>
+
+                    <button
+                      className="text-gray-400 text-center text-lg"
+                      onClick={() => handleTimeline("call")}
+                    >
+                      Call
+                    </button>
+
+                  </div>
+
+                </div>
+
+
+                {/* ================= TEXT ================= */}
+
+                <div className="card w-48 h-30 bg-base-100 card-xs shadow-sm">
+
+                  <div className="card-body">
+
+                    <h2 className="font-bold text-2xl mt-5 flex justify-center items-center">
+
+                      <i className="fa-solid fa-message"></i>
+
+                    </h2>
+
+                    <button
+                      className="text-gray-400 text-center text-lg"
+                      onClick={() => handleTimeline("text")}
+                    >
+                      Text
+                    </button>
+
+                  </div>
+
+                </div>
+
+
+                {/* ================= VIDEO ================= */}
+
+                <div className="card w-48 h-30 bg-base-100 card-xs shadow-sm">
+
+                  <div className="card-body">
+
+                    <h2 className="font-bold text-2xl mt-5 flex justify-center items-center">
+
+                      <i className="fa-solid fa-video"></i>
+
+                    </h2>
+
+                    <button
+                      className="text-gray-400 text-center text-lg"
+                      onClick={() => handleTimeline("video")}
+                    >
+                      Video
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
+
       </div>
-
-
-
- <div className="card w-48 h-30 bg-base-100 card-xs shadow-sm">
-        <div className="card-body">
-          <h2 className="font-bold text-2xl mt-5">
-            {friend.goal}
-          </h2>
-          <p className="text-gray-400"> Goal Days</p>
-
-          <div className="justify-end card-actions"></div>
-        </div>
-      </div>
-
-
-       <div className="card w-48 h-30 bg-base-100 card-xs shadow-sm">
-        <div className="card-body">
-          <h2 className="font-bold text-2xl mt-5">
-            {friend.next_due_date}
-          </h2>
-          <p className="text-gray-400"> Goal Days</p>
-
-          <div className="justify-end card-actions"></div>
-        </div>
-      </div>
-</section>
-    
-
-
- <div className="card w-150 bg-base-100 card-sm shadow-sm mt-5">
-  <div className="card-body">
-   <div className="flex"> <h2 className="card-title">Relationship Goal</h2>
-     <button className="btn ml-90">Edit</button></div>
-    <p>Connect every <span className="font-bold">30 days </span></p>
-    <div className="justify-end card-actions">
-     
-    </div>
-  </div>
-</div>
-
-
-
-
- <div className="card w-150 bg-base-100 card-sm shadow-sm mt-5">
-  <div className="card-body">
-   <h2 className="card-title">Quick Check-In</h2>
-     
-   <div className="flex">
-
-     <div className="card w-48 h-30 bg-base-100 card-xs shadow-sm">
-        <div className="card-body">
-          <h2 className="font-bold text-2xl mt-5 flex justify-center items-center">
-            <i class="fa-solid fa-phone"></i>
-          </h2>
-          <p className="text-gray-400 text-center text-lg">call</p>
-
-          <div className="justify-end card-actions"></div>
-        </div>
-      </div>
-
-
-      <div className="card w-48 h-30 bg-base-100 card-xs shadow-sm">
-        <div className="card-body">
-          <h2 className="font-bold text-2xl mt-5 flex justify-center items-center">
-           <i class="fa-solid fa-message"></i>
-          </h2>
-          <p className="text-gray-400 text-center text-lg">Text</p>
-
-          <div className="justify-end card-actions"></div>
-        </div>
-      </div>
-
-
-
-      <div className="card w-48 h-30 bg-base-100 card-xs shadow-sm">
-        <div className="card-body">
-          <h1 className="font-bold text-2xl mt-5 flex justify-center items-center">
-            <i class="fa-solid fa-video"></i>
-          </h1>
-          <h2 className="text-gray-400 font-bold  text-center text-lg ">Video</h2>
-
-          <div className="justify-end card-actions"></div>
-        </div>
-      </div>
-
-
-
-   </div>
-   
-  </div>
-</div>
-      </div>
-
-
-
-
-
-     
-    </div>
+    </>
   );
 }
