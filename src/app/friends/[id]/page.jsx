@@ -25,10 +25,10 @@ export default function FriendsDetails() {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-10">
+    <div className="grid grid-cols-2 gap-10 mt-20">
 
-      <div>
-        <h1>Id: {id}</h1>
+      <div className="ml-140">
+       
 
          <div>
         <div className="card bg-base-100 w-96 shadow-sm">
@@ -158,7 +158,7 @@ export default function FriendsDetails() {
  <div className="card w-150 bg-base-100 card-sm shadow-sm mt-5">
   <div className="card-body">
    <div className="flex"> <h2 className="card-title">Relationship Goal</h2>
-     <button className="btn ml-90">Buy Now</button></div>
+     <button className="btn ml-90">Edit</button></div>
     <p>Connect every <span className="font-bold">30 days </span></p>
     <div className="justify-end card-actions">
      
