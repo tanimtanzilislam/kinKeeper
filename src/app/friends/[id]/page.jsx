@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams ,useRouter} from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -29,26 +29,26 @@ export default function FriendsDetails() {
   }, [id]);
 
   const handleTimeline = (type) => {
-    // Friend না থাকলে function বন্ধ
+   
     if (!friend) {
       return;
     }
 
-    // আগের events বের করা
+
     const existingEvents =
       JSON.parse(localStorage.getItem("timelineEvents")) || [];
 
-    // নতুন event
+    
     const newEvent = {
       id: Date.now(),
       type: type,
       friendName: friend.name,
     };
 
-    // নতুন event সবার সামনে
+    
     const updatedEvents = [newEvent, ...existingEvents];
 
-    // localStorage-এ save
+ 
     localStorage.setItem(
       "timelineEvents",
       JSON.stringify(updatedEvents)
@@ -56,16 +56,15 @@ export default function FriendsDetails() {
 
     // Toast notification
     toast.success(`${type} added to timeline!`);
-
+    router.push('/timeline')
     console.log(updatedEvents);
   };
 
-  // Loading অবস্থায়
+
   if (loading) {
     return <p className="text-center mt-20">Loading...</p>;
   }
 
-  // Friend পাওয়া না গেলে
   if (!friend) {
     return (
       <div className="text-center mt-20">
