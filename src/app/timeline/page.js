@@ -36,10 +36,11 @@ export default function Timeline() {
     })
   }
 
+  const filteredEvents= filterType=="all"?events:events.filter((event)=>event.type===filterType)
   return (
     <div className="max-w-3xl mx-auto mt-20">
 
-      <select className="select selected-bordered mb-6">
+      <select value={filterType} onChange={(e)=>setFilterType(e.target.value)} className="select selected-bordered mb-6">
 
         <option  value="all">All</option>
         <option  value="call">Call</option>
@@ -61,7 +62,7 @@ export default function Timeline() {
       ) : (
         <div className="space-y-4">
 
-          {events.map((event) => (
+          {filteredEvents.map((event) => (
             <div
               key={event.id}
               className="card bg-base-100 shadow-sm"
