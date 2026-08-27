@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 export default function Timeline() {
   const [events, setEvents] = useState([]);
-
+  const [filterType, setFilterType]=useState("all");
 
   useEffect(() => {
     const savedEvents =
@@ -38,6 +38,17 @@ export default function Timeline() {
 
   return (
     <div className="max-w-3xl mx-auto mt-20">
+
+      <select className="select selected-bordered mb-6">
+
+        <option  value="all">All</option>
+        <option  value="call">Call</option>
+          <option  value="text">Text</option>
+            <option  value="video">Video</option>
+        
+
+
+      </select>
 
       <h1 className="text-3xl font-bold mb-8">
         Timeline
