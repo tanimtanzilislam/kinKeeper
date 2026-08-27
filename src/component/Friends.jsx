@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export const Friends = () => {
@@ -23,9 +24,10 @@ export const Friends = () => {
 
       <div className="grid grid-cols-4 gap-10">
         {friends.map((friend) => (
-          <div
+          <Link
             key={friend.id}
-            className="card bg-base-100 w-full gap-5"
+            className="card bg-base-100 w-full gap-5 cursor-pointer"
+            href={`/friends/${friend.id}`}
           >
             <figure>
               <img
@@ -60,7 +62,7 @@ export const Friends = () => {
                 ) : null}
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
